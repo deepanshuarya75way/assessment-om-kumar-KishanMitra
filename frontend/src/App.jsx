@@ -13,7 +13,7 @@ import MarketPrice from "./components/home/MarketPrice";
 import Diseasedetection from "./components/home/Disease-Detection";
 import Weather from "./pages/Weather";
 import SoilRecommended from "./services/SoilRecommended";
-import FarmerChatbot from "./services/FarmerChatBot";
+import FarmerChatbot from "./services/FarmerChatbot";
 import DesireCrop from "./services/DesireCrop";
 import DiseaseDetails from "./pages/DiseaseDetails";
 import Login from "./Auth/Login";
