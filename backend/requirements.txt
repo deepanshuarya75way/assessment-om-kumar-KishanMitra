@@ -12,7 +12,7 @@ google-genai
 beautifulsoup4
 pandas
 pillow
-tensorflow-cpu
+tensorflow
 python-multipart
 werkzeug
 twilio
