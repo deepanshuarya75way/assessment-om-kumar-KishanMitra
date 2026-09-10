@@ -2,6 +2,7 @@ import os
 import numpy as np
 from PIL import Image
 from app.services.ai import get_ai_response
+from app.model_downloader import download_single_model
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "..", "..", "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -13,8 +14,11 @@ _model = None
 def get_model():
     global _model
     if _model is None:
-        from tensorflow.keras.models import load_model
+        if not os.path.exists(MODEL_PATH):
+            download_single_model("plant_disease_prediction_model.h5", os.path.join("models", "plant_disease_prediction"))
+
         if os.path.exists(MODEL_PATH):
+            from tensorflow.keras.models import load_model
             _model = load_model(MODEL_PATH)
         else:
             raise FileNotFoundError(f"Model file not found at {MODEL_PATH}")
