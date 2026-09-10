@@ -1,16 +1,22 @@
-import os, joblib
+import os
+import joblib
 
-# Base directory = app/
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Correct path to your model file
 MODEL_PATH = os.path.join(BASE_DIR, "models", "crop_recommendation", "crop_recomodation_model.joblib")
 
-print("Loading model from:", MODEL_PATH) 
+_model = None
 
-model = joblib.load(MODEL_PATH)
+def get_model():
+    global _model
+    if _model is None:
+        if os.path.exists(MODEL_PATH):
+            _model = joblib.load(MODEL_PATH)
+        else:
+            raise FileNotFoundError(f"Model file not found at {MODEL_PATH}")
+    return _model
 
 def predict_crop(input_data: dict) -> str:
+    model = get_model()
     features = [
         input_data["N"],
         input_data["P"],
