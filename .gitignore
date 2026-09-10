@@ -1,0 +1,93 @@
+# ============================================
+# KishanMitra — Root .gitignore
+# ============================================
+
+# ─────────────────────────────────────────────
+# 🔐 Environment & Secrets (NEVER commit these)
+# ─────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.secret
+
+# ─────────────────────────────────────────────
+# 📦 Frontend (Node / React / Vite)
+# ─────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.vite/
+frontend/coverage/
+
+# Logs
+frontend/logs/
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+
+# ─────────────────────────────────────────────
+# 🐍 Backend (Python / FastAPI)
+# ─────────────────────────────────────────────
+backend/.venv/
+backend/venv/
+backend/env/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/**/*.pyo
+backend/**/*.pyd
+backend/.Python
+
+# Uploads (user-uploaded files)
+backend/uploads/
+
+# Python packaging
+backend/*.egg-info/
+backend/dist/
+backend/build/
+backend/.eggs/
+
+# Testing
+backend/.pytest_cache/
+backend/.coverage
+backend/htmlcov/
+
+# ─────────────────────────────────────────────
+# 🤖 ML Models — Large Files (> 100 MB)
+# GitHub limit is 100MB per file
+# Download instructions in README
+# ─────────────────────────────────────────────
+backend/app/models/**/*.h5
+backend/app/models/**/*.pkl
+backend/app/models/**/*.zip
+backend/app/models/plant_disease_prediction/
+backend/app/models/crop_yield_prediction/
+
+# ─────────────────────────────────────────────
+# 🖥️ Editor & OS Files
+# ─────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─────────────────────────────────────────────
+# 📓 Jupyter Notebooks checkpoints
+# ─────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ─────────────────────────────────────────────
+# 🗂️ Misc
+# ─────────────────────────────────────────────
+*.local
+*.tmp
+*.temp

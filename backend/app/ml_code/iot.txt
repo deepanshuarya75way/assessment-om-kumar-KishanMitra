@@ -1,0 +1,87 @@
+#include <WiFi.h>
+#include <ESPAsyncWebServer.h>
+#include <ESP32Servo.h>
+#include <DHT.h>
+
+// ---------- WiFi ----------
+const char* ssid = "Galaxy";
+const char* password = "9876543221";
+
+// ---------- Servo ----------
+Servo myServo;
+int servoPin = 18;
+String servoStatus = "OFF";
+
+// ---------- DHT ----------
+#define DHTPIN 4
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
+// ---------- Soil & Water ----------
+#define SOIL_PIN 34
+#define WATER_PIN 35
+
+// ---------- Web Server ----------
+AsyncWebServer server(80);
+
+void setup() {
+  Serial.begin(115200);
+
+  // WiFi
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to WiFi");
+  while(WiFi.status() != WL_CONNECTED){
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nConnected! IP: " + WiFi.localIP().toString());
+
+  // DHT & Servo
+  dht.begin();
+  myServo.attach(servoPin);
+
+  // ---------- Routes ----------
+
+  // Soil Test Route
+  server.on("/soil-test", HTTP_GET, [](AsyncWebServerRequest *request){
+    float temperature = dht.readTemperature();
+    float humidity = dht.readHumidity();
+    int soilValue = analogRead(SOIL_PIN);
+    int soilPercent = map(soilValue, 4095, 0, 0, 100);
+    int waterValue = analogRead(WATER_PIN);
+    int waterPercent = map(waterValue, 4095, 0, 0, 100);
+
+    String json = "{";
+    json += "\"temperature\":" + String(temperature) + ",";
+    json += "\"humidity\":" + String(humidity) + ",";
+    json += "\"soil_moisture\":" + String(soilPercent) + ",";
+    json += "\"water_level\":" + String(waterPercent);
+    json += "}";
+    Serial.println(temperature + humidity + soilValue + soilPercent + waterValue + waterPercent);
+    request->send(200, "application/json", json);
+  });
+
+  // Water Pump Route
+  server.on("/water-pump", HTTP_POST, [](AsyncWebServerRequest *request){
+    if(request->hasParam("action", true)){
+      String action = request->getParam("action", true)->value();
+      action.toUpperCase();
+      if(action == "ON"){
+        myServo.write(90);
+        servoStatus = "ON";
+      } else {
+        myServo.write(0);
+        servoStatus = "OFF";
+      }
+      request->send(200, "application/json", "{\"servo_status\":\"" + servoStatus + "\"}");
+    } else {
+      request->send(400, "application/json", "{\"error\":\"Missing action parameter\"}");
+    }
+  });
+
+  server.begin();
+}
+
+void loop() {
+  // Nothing needed here, Async server handles requests
+}

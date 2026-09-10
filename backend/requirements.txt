@@ -1,0 +1,24 @@
+fastapi
+uvicorn[standard]
+pymongo
+pydantic
+python-dotenv
+requests
+joblib
+xgboost
+numpy
+scikit-learn==1.6.1
+numpy
+google-genai
+beautifulsoup4
+pandas
+service
+
+# disease prediction
+pillow
+tensorflow
+python-multipart
+werkzeug
+
+#scheduler
+twilio
