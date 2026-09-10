@@ -1,8 +1,13 @@
 import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware 
+from fastapi.middleware.cors import CORSMiddleware
 import asyncio
+import logging
+
+from app.model_downloader import download_models_if_needed
+
+logging.basicConfig(level=logging.INFO)
 
 from app.routes import weather, ai_routes , price_router ,crop_yield_routes,crop_recommendation,plant_disease,ai_routes,schedule_routes,iot_route,crop
 
@@ -42,5 +47,7 @@ app.include_router(crop.router, prefix="/soil", tags=["npk Recommendation"])
 
 @app.on_event("startup")
 async def startup_event():
+    # Download large ML models from HuggingFace Hub (if not already present)
+    download_models_if_needed()
     asyncio.create_task(schedule_routes.scheduler_loop())
 

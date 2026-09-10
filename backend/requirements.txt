@@ -8,17 +8,18 @@ joblib
 xgboost
 numpy
 scikit-learn==1.6.1
-numpy
 google-genai
 beautifulsoup4
 pandas
-service
 
-# disease prediction
+# disease prediction (CPU only — lighter for deployment)
 pillow
-tensorflow
+tensorflow-cpu
 python-multipart
 werkzeug
 
-#scheduler
+# scheduler
 twilio
+
+# model download from Hugging Face
+huggingface_hub
