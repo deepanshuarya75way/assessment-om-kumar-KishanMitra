@@ -19,12 +19,11 @@ COLORS ={
 }
 
 WARNING_NAMES = {
-  1:"No Warning"
   2:"Heavy Rain",
   3:"heavy snow",
   4:"thunderstrom/lightinig",
   5:"hailstrom",
-  6:"Dust Strom"
+  6:"Dust Strom",
   7:"Dust Raising Winds"
 
 }
@@ -61,6 +60,24 @@ async def disaster_alerts(city:str):
       detail="city not found"
     )
   district_id = DISTRICTS.get(city.lower())
+
+  if not district_id:
+    try:
+      response = requests.get(IMD_URL,timeout=10)
+      response.raise_for_status()
+      district_data = response.json()
+
+      if isinstance(district_data,list):
+        for item in district_data:
+          if str(item.get("District","")).strip().lower()==city.lower():
+            district_id = item.get("obj_id")
+            break
+    except requests.RequestException as e :
+      raise HTTPException(
+        status_code=502,
+        detail="IMD service error:"+str(e)
+      )
+
 
   if not district_id:
     return {
