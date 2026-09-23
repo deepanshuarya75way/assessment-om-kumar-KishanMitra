@@ -24,6 +24,7 @@ import MicButton from "./pages/MicButton";
 import History from "./pages/history";  
 import SoilReportDetail from "./pages/soilreport.jsx";
 import ChatbotWrapper from './wrapper/ChatbotWrapper'
+import DisasterAlerts from "./pages/DisasterAlerts.jsx";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/history" element={<History />} />
             <Route path="/soil-report/:timestamp" element={<SoilReportDetail />} />
+            <Route path="/disaster-alearts" element={<DisasterAlerts/>}/>
           </Route>
         </Routes>
         <MicButton />
